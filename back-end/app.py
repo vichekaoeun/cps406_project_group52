@@ -54,14 +54,14 @@ def post(post_no):
     if request.method == 'POST':
         add_comment(
             comment_info = request.form.get("comment_info", type=str),
-            student_email = session["email"],
+            account = session["email"],
             post_no = post_no,
             post_id = post[2]
         )
 
     comments = query_comments(post_no=post_no)
     print(comments)
-    return render_template('post.html', post_title=post_title,student_email=session["email"],comments=comments)
+    return render_template('post.html', post_title=post_title,account=session["email"],comments=comments)
 
 
 if __name__ == "__main__":
