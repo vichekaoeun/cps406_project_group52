@@ -1,27 +1,30 @@
+import React, { useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
-import ladybug from './images/ladybug.png';
+import './Login.css';
+import TitleCard from '../components/TitleCard';
 
 function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Username:', username);
+    console.log('Password:', password);
+  }
+
   return (
     <div className="Main-Container">
-      <div className="Content">
-        <div id="title-card">
-          <img src={ladybug} className="App-logo" alt="logo" />
-          <h1>Bug Report System (BRS)</h1>
-        </div>
-        <p><i>Login</i></p>
-        <div className="red-bar"></div>
-      </div>
+      <TitleCard />
       <div className="Authentication">
-        <form id="form">
+        <form id="form" onSubmit={handleSubmit}>
           <label>
             Username:
-            <input />
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
           </label>
           <label>
             Password:
-            <input />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </label>
           <button type='submit'>Login</button>
         </form>

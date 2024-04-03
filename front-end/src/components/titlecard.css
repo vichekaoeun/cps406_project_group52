@@ -1,0 +1,19 @@
+.Content {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.red-bar {
+    width: 100%;
+    height: 10px;
+    background-color: red;
+}
+
+.App-logo {
+    width: 100px;
+    height: 100px;
+}
