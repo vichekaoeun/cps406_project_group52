@@ -62,3 +62,13 @@
     display: flex;
     gap: 1rem;
 }
+
+.Link {
+    color: #000;
+    text-decoration: none;
+}
+
+.Link:hover {
+    color: #000;
+    text-decoration: underline;
+}

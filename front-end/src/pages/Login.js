@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './Login.css';
 import TitleCard from '../components/TitleCard';
+import { Link } from 'react-router-dom';
 
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const loginTitle = "login";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,7 +16,7 @@ function App() {
 
   return (
     <div className="Main-Container">
-      <TitleCard />
+      <TitleCard title={loginTitle} />
       <div className="Authentication">
         <form id="form" onSubmit={handleSubmit}>
           <label>
@@ -35,7 +36,7 @@ function App() {
           </div>
           <div id="create-form">
             <button>New User?</button>
-            <button>*Sign up now!</button>
+            <button><Link className='Link' to="/register" >*Sign up now!</Link></button>
           </div>
         </div>
       </div>
