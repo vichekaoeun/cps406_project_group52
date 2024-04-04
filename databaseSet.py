@@ -1,15 +1,22 @@
-def dbinit():
-    import sqlite3 as sql
-    connection = sql.connect('database.db')
-    sql_file = 'dbinit.sql'
+import sqlite3
+from flask import g, current_app
 
-    with open(sql_file, encoding='utf-8', mode='r') as f:
-        sql_list = f.read().split(';')[:-1]
-        for x in sql_list:
-            if '\n' in x:
-                x = x.replace('\n', ' ')
-            sql_item = x + ';'
-            connection.execute(sql_item)
+DATABASE = 'database.db'
 
-if __name__ == "__main__":
-    dbinit()
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(DATABASE)
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+def close_db(e=None):
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
+
+def init_db():
+    with current_app.app_context():
+        db = get_db()
+        with current_app.open_resource('dbinit.sql', mode='r') as f:
+            db.executescript(f.read())

@@ -1,11 +1,21 @@
-from flask import Flask, session, redirect, url_for, request, render_template, flash
+from flask import Flask, jsonify, send_from_directory, session, redirect, url_for, request, render_template, flash
 from functions import *
+from databaseSet import get_db, close_db, init_db
 from forms import *
 from flask_bootstrap import Bootstrap
-from flask import Flask, send_from_directory
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+import sqlite3 
+import click
 import os
 
-app = Flask(__name__, static_folder='front-end/build')
+app = Flask(__name__, static_folder='./build')
+
+@app.cli.command("init-db")
+def init_db_command():
+    """Clear the existing data and create new tables."""
+    init_db()
+    click.echo("Initialized the database.")
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -17,22 +27,40 @@ def serve(path):
 
 host = 'http://127.0.0.1:5000/'
 
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json
+    employee_id = data['employee_id']
+    username = data['username']
+    password = data['password']
+    password_hash = generate_password_hash(password)
 
-@app.route('/login', methods=['POST', 'GET'])
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        cursor.execute("INSERT INTO user (employee_id, username, password) VALUES (?, ?, ?)", (employee_id, username, password_hash))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Success!'}), 200
+    except sqlite3.IntegrityError:
+        return jsonify({'success': False, 'message': 'Username already exists'}), 409
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/login', methods=['POST'])
 def login():
-    error = None
-    if request.method == 'POST':
-        account = request.form['account']
-        password = request.form['password']
-        work_id = request.form['work_id']
-        
-        if validate_credentials(account, password, work_id):
-            session['account'] = account
-            session['work_id'] = work_id
-            return redirect(url_for('home'))
-        else:
-            error = 'Invalid account, password, or work ID'
-    return render_template('login.html', error=error)
+    data = request.json
+    username = data['username']
+    password = data['password']
+
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT id, password FROM user WHERE username = ?", (username,))
+    user = cursor.fetchone()
+
+    if user and check_password_hash(user[1], password):
+        return jsonify({'success': True, 'message': 'Logged in successfully'})
+    else:
+        return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
 
 @app.route('/reset_pw', methods=['POST'])
 def reset_pw():
