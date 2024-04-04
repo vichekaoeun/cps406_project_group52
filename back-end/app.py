@@ -26,6 +26,16 @@ def login():
             error = 'Invalid account, password, or work ID'
     return render_template('login.html', error=error)
 
+@app.route('/reset_pw', methods=['POST'])
+def reset_pw():
+    if request.method == 'POST':
+        if request.form['Old_PW']==session['password']:
+            update_pw(session['id'],request.form['New_PW'])
+            return redirect('/Users')
+        else:
+            error = 'Old password error'
+            return redirect('/Users')
+
 @app.route('/Bugtextbox/<string:post_id>', methods=['GET', 'POST'])
 def forum(post_id):
 
