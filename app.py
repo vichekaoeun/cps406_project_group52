@@ -2,10 +2,18 @@ from flask import Flask, session, redirect, url_for, request, render_template, f
 from functions import *
 from forms import *
 from flask_bootstrap import Bootstrap
+from flask import Flask, send_from_directory
+import os
 
-app = Flask(__name__)
-app.secret_key = 'saddsffds'
-bootstrap = Bootstrap(app)
+app = Flask(__name__, static_folder='front-end/build')
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 host = 'http://127.0.0.1:5000/'
 
