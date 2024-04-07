@@ -56,12 +56,12 @@ function App() {
             <button><Link className='Link' to="/change-username">*Forgot username</Link></button>
           </div>
           <div id="create-form">
-            <button>New User?</button>
+            <button style={{ textDecoration: "none", border: "none", background: "none" }}>New Users?</button>
             <button><Link className='Link' to="/register" >*Sign up now!</Link></button>
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
