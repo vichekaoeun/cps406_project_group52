@@ -53,7 +53,7 @@ function App() {
         <div className="other-form">
           <div id="forgot-form">
             <button><Link className='Link' to="/change-password">*Forgot password</Link></button>
-            <button>*Forgot username</button>
+            <button><Link className='Link' to="/change-username">*Forgot username</Link></button>
           </div>
           <div id="create-form">
             <button>New User?</button>

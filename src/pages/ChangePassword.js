@@ -45,15 +45,15 @@ function ChangePassword() {
                 <form id="form" onSubmit={handleChangePassword}>
                     <label>
                         Old Password:
-                        <input type="password" />
+                        <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
                     </label>
                     <label>
                         New Password:
-                        <input type="password" />
+                        <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                     </label>
                     <label>
                         Confirm New Password:
-                        <input type="password" />
+                        <input type="password" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} />
                     </label>
                     <button type='submit'>Change Password</button>
                     {message && <p>{message}</p>}
