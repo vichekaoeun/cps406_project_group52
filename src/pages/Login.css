@@ -94,7 +94,7 @@ textarea {
     position: relative;
 }
 
-button {
+#btn {
     position: absolute;
     left: 37%;
     transform: translateX(-50%);
@@ -105,32 +105,38 @@ button {
     color: rgb(170, 52, 52);
 }
 
-button:hover {
+#btn:hover {
     color: red;
     text-decoration: underline;
 }
 
-.Navigation button:nth-child(1) {
+.Navigation #btn:nth-child(1) {
     top: 3rem;
 }
 
-.Navigation button:nth-child(2) {
+.Navigation #btn:nth-child(2) {
     top: 5rem;
 }
 
-.Navigation button:nth-child(3) {
+.Navigation #btn:nth-child(3) {
     top: 7rem;
 }
 
-.Navigation button:nth-child(4) {
+.Navigation #btn:nth-child(4) {
     top: 9rem;
 }
 
-.Navigation button:nth-child(5) {
+.Navigation #btn:nth-child(5) {
     top: 13rem;
 }
 
 svg {
     position: relative;
     z-index: 0;
+}
+
+.operation-button {
+    display: flex;
+    gap: 1rem;
+    margin-top: 20px;
 }

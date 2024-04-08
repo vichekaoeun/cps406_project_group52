@@ -34,13 +34,18 @@ function Report() {
                             <span>Progress on bug</span>
                         </div>
                     </label>
+                    <div className="operation-button">
+                        <button >Save & Exit</button>
+                        <button >Submit</button>
+                        <button >Cancel</button>
+                    </div>
                 </form>
                 <div className="Navigation">
-                    <button><u>*Home Page</u></button>
-                    <button><u>*Change Password</u></button>
-                    <button><u>*Bug Library</u></button>
-                    <button><u>*Help?</u></button>
-                    <button><u>*Sign out</u></button>
+                    <button id="btn"><u>*Home Page</u></button>
+                    <button id="btn"><u>*Change Password</u></button>
+                    <button id="btn"><u>*Bug Library</u></button>
+                    <button id="btn"><u>*Help?</u></button>
+                    <button id="btn"><u>*Sign out</u></button>
                     <svg width="400" height="372" viewBox="0 0 427 372" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="427" height="372" fill="#F5F5F5" />
                         <g clip-path="url(#clip0_0_1)">
