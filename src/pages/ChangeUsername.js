@@ -4,6 +4,7 @@ import TitleCard from '../components/TitleCard';
 import { Link } from 'react-router-dom';
 
 function ChangeUsername() {
+    const [employeeid, setEmployeeID] = useState('');
     const [newUsername, setNewUsername] = useState('');
     const [message, setMessage] = useState('');
     const titleU = "change username";
@@ -16,7 +17,7 @@ function ChangeUsername() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ newUsername }),
+                body: JSON.stringify({ employeeid, newUsername }),
             });
 
             const data = await response.json();
@@ -37,6 +38,10 @@ function ChangeUsername() {
             <TitleCard title={titleU} />
             <div className="Authentication">
                 <form id="form" onSubmit={handleChangeUsername}>
+                    <label>
+                        Employee ID:
+                        <input type="text" value={employeeid} onChange={(e) => setEmployeeID(e.target.value)} />
+                    </label>
                     <label>
                         New Username:
                         <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />

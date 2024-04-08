@@ -12,7 +12,6 @@ app = Flask(__name__, static_folder='./build')
 
 @app.cli.command("init-db")
 def init_db_command():
-    """Clear the existing data and create new tables."""
     init_db()
     click.echo("Initialized the database.")
 
@@ -62,47 +61,57 @@ def register():
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/reset_pw', methods=['POST'])
-def reset_pw():
-    if request.method == 'POST':
-        if request.form['Old_PW']==session['password']:
-            update_pw(session['id'],request.form['New_PW'])
-            return redirect('/Users')
-        else:
-            error = 'Old password error'
-            return redirect('/Users')
-
-@app.route('/login', methods=['POST'])
-def login():
+def update_password():
     data = request.json
-    username = data['username']
-    password = data['password']
+    employee_id = data['employeeid']
+    new_password = data['newPassword']
+    confirm_password = data['confirmNewPassword']
+
+    if new_password != confirm_password:
+        return jsonify({'success': False, 'message': 'Passwords do not match'}), 400
 
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT id, password FROM user WHERE username = ?", (username,))
-    user = cursor.fetchone()
 
-    if user and check_password_hash(user[1], password):
-        return jsonify({'success': True, 'message': 'Logged in successfully'})
-    else:
-        return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
+    cursor.execute("SELECT 1 FROM user WHERE employee_id = ?", (employee_id,))
+    if not cursor.fetchone():
+        return jsonify({'success': False, 'message': 'Employee ID not found'}), 404
 
-@app.route('/post/<int:post_no>', methods=['GET', 'POST'])
-def post(post_no):
-    post = query_post(post_no=post_no)[0]
-    post_title = post[-1]
-    if request.method == 'POST':
-        add_comment(
-            comment_info = request.form.get("comment_info", type=str),
-            account = session["email"],
-            post_no = post_no,
-            post_id = post[2]
-        )
+    try:
+        password_hash = generate_password_hash(new_password)
+        cursor.execute("UPDATE user SET password = ? WHERE employee_id = ?", 
+                       (password_hash, employee_id))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Password updated successfully'}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': 'Failed to update password'}), 500
 
-    comments = query_comments(post_no=post_no)
-    print(comments)
-    return render_template('post.html', post_title=post_title,account=session["email"],comments=comments)
+@app.route('/reset_un', methods=['POST'])
+def update_username():
+    data = request.json
+    employee_id = data['employeeid']
+    new_username = data['newUsername']
 
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT 1 FROM user WHERE employee_id = ?", (employee_id,))
+    if not cursor.fetchone():
+        return jsonify({'success': False, 'message': 'Employee ID not found'}), 404
+
+    cursor.execute("SELECT 1 FROM user WHERE username = ?", (new_username,))
+    if cursor.fetchone():
+        return jsonify({'success': False, 'message': 'Username already exists'}), 409
+
+    try:
+        cursor.execute("UPDATE user SET username = ? WHERE employee_id = ?", 
+                       (new_username, employee_id))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Username updated successfully'}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': 'Failed to update username'}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

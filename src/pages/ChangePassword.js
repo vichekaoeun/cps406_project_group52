@@ -4,7 +4,7 @@ import TitleCard from '../components/TitleCard';
 import { Link } from 'react-router-dom';
 
 function ChangePassword() {
-    const [oldPassword, setOldPassword] = useState('');
+    const [employeeid, setEmployeeid] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -22,7 +22,7 @@ function ChangePassword() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ oldPassword, newPassword, confirmNewPassword }),
+                    body: JSON.stringify({employeeid, newPassword, confirmNewPassword }),
                 });
 
                 const data = await response.json();
@@ -44,8 +44,8 @@ function ChangePassword() {
             <div className="Authentication">
                 <form id="form" onSubmit={handleChangePassword}>
                     <label>
-                        Old Password:
-                        <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+                        Employee ID:
+                        <input type="text" value={employeeid} onChange={(e) => setEmployeeid(e.target.value)} />
                     </label>
                     <label>
                         New Password:
