@@ -7,6 +7,11 @@ def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(DATABASE)
         g.db.row_factory = sqlite3.Row
+        
+        with g.db:
+            g.db.execute("PRAGMA journal_mode=WAL;")
+            g.db.execute("PRAGMA busy_timeout = 5000;")
+
     return g.db
 
 def close_db(e=None):

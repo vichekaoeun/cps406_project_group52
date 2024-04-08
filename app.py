@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, send_from_directory, session, redirect, url_for, request, render_template, flash
 from functions import *
 from databaseSet import get_db, close_db, init_db
-from forms import *
 from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
@@ -16,6 +15,10 @@ def init_db_command():
     """Clear the existing data and create new tables."""
     init_db()
     click.echo("Initialized the database.")
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    close_db(exception)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -37,14 +40,36 @@ def register():
 
     db = get_db()
     cursor = db.cursor()
+
+    cursor.execute("SELECT 1 FROM user WHERE employee_id = ?", (employee_id,))
+    if cursor.fetchone():
+        return jsonify({'success': False, 'message': 'Employee ID already registered'}), 409
+    
+    cursor.execute("SELECT 1 FROM user WHERE username = ?", (username,))
+    if cursor.fetchone():
+        return jsonify({'success': False, 'message': 'Username already exists'}), 409
+
     try:
-        cursor.execute("INSERT INTO user (employee_id, username, password) VALUES (?, ?, ?)", (employee_id, username, password_hash))
+        cursor.execute("INSERT INTO user (employee_id, username, password) VALUES (?, ?, ?)", 
+                       (employee_id, username, password_hash))
         db.commit()
         return jsonify({'success': True, 'message': 'Success!'}), 200
     except sqlite3.IntegrityError:
-        return jsonify({'success': False, 'message': 'Username already exists'}), 409
+        db.rollback()
+        return jsonify({'success': False, 'message': 'Registration failed due to a database error.'}), 500
     except Exception as e:
+        db.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/reset_pw', methods=['POST'])
+def reset_pw():
+    if request.method == 'POST':
+        if request.form['Old_PW']==session['password']:
+            update_pw(session['id'],request.form['New_PW'])
+            return redirect('/Users')
+        else:
+            error = 'Old password error'
+            return redirect('/Users')
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -61,37 +86,6 @@ def login():
         return jsonify({'success': True, 'message': 'Logged in successfully'})
     else:
         return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
-
-@app.route('/reset_pw', methods=['POST'])
-def reset_pw():
-    if request.method == 'POST':
-        if request.form['Old_PW']==session['password']:
-            update_pw(session['id'],request.form['New_PW'])
-            return redirect('/Users')
-        else:
-            error = 'Old password error'
-            return redirect('/Users')
-
-@app.route('/Bugtextbox/<string:post_id>', methods=['GET', 'POST'])
-def forum(post_id):
-
-    session['post_id'] = post_id
-
-    post_form = Post_Form()
-    if request.method == 'GET':
-        posts = query_post(post_id)
-        return render_template('BRS.html',posts=posts,post_id=post_id,post_form=post_form,identity=session['user-type'])
-
-    if request.method == 'POST':
-        add_post(
-            post_info = post_form.post_info.data,
-            student_email = session["email"],
-            post_id = post_id
-        )
-
-        posts = query_post(post_id)
-        return render_template('BRS.html', posts=posts, post_id=post_id, post_form=post_form,identity=session['user-type'])
-
 
 @app.route('/post/<int:post_no>', methods=['GET', 'POST'])
 def post(post_no):
