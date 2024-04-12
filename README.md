@@ -1,4 +1,12 @@
 # cps406_project_group52
+## Team Members:
+Vicheka Oeun
+Hongyu Jin
+Param Chauhan
+Nami Dilipbhai Hirpara
+Dhruvi Paresh Thakkar
+Ansh Ansh
+
 ## Executive Summary:
 The purpose of this program is to let users input bugs/errors into a database. The program should
 be an easy and friendly script where the user can easily figure out how to implement it. Users
