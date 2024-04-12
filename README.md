@@ -1,10 +1,10 @@
 # cps406_project_group52
 ## Team Members:
-Vicheka Oeun
-Hongyu Jin
-Param Chauhan
-Nami Dilipbhai Hirpara
-Dhruvi Paresh Thakkar
+Vicheka Oeun,
+Hongyu Jin,
+Param Chauhan,
+Nami Dilipbhai Hirpara,
+Dhruvi Paresh Thakkar,
 Ansh Ansh
 
 ## Executive Summary:
