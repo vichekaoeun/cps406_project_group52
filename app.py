@@ -163,6 +163,27 @@ def submit_report():
         db.rollback()
         return jsonify({'success': False, 'message': str(e)}), 500
 
+@app.route('/bug-reports', methods=['GET'])
+def get_bug_reports():
+    try:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM bug_reports")
+        reports = cursor.fetchall()
+        return jsonify({
+            'success': True,
+            'reports': [{
+                'report_number': report['report_number'],
+                'bug_type': report['bug_type'],
+                'summary': report['summary'],
+                'updates_requested': report['updates_requested'],
+                'progress_requested': report['progress_requested']
+        } for report in reports]
+    }), 200
+    except Exception as e:
+        print(str(e)) 
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
 

@@ -1,4 +1,4 @@
-import React, { userEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Login.css';
 import TitleCard from '../components/TitleCard';
 import BugCard from "../components/BugCard";
@@ -6,56 +6,37 @@ import BugCard from "../components/BugCard";
 function Library() {
     const [reportNumber, setReportNumber] = useState(0);
     const [reportSummary, setReportSummary] = useState("Summary of the bug report.");
+    const [reports, setReports] = useState([]);
 
-    /*
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch('/library', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
+        fetch('/bug-reports')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
                 if (data.success) {
-                    setReportNumber(data.report_number);
-                    setReportSummary(data.report_summary);
+                    setReports(data.reports);
                 } else {
-                    console.error(data.message || 'Failed to fetch data.');
+                    throw new Error(data.message);
                 }
-            } catch (error) {
-                console.error('Failed to fetch data.', error);
-            }
-        }
-
-        fetchData();
+            })
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
-    */
 
     return (
         <div className="Main-Container">
             <TitleCard title="Bug Library" />
             <div className="Authentication" id="library-sec">
-                <div id="card-section">
-                    <BugCard report_number={reportNumber} report_summary={reportSummary} />
-                </div>
-                <div id="card-section">
-                    <BugCard report_number={reportNumber} report_summary={reportSummary} />
-                </div>
-                <div id="card-section">
-                    <BugCard report_number={reportNumber} report_summary={reportSummary} />
-                </div>
-                <div id="card-section">
-                    <BugCard report_number={reportNumber} report_summary={reportSummary} />
-                </div>
-                <div id="card-section">
-                    <BugCard report_number={reportNumber} report_summary={reportSummary} />
-                </div>
+                {reports.map(report => (
+                    <div key={report.report_number} id="card-section">
+                        <BugCard
+                            report_number={report.report_number}
+                            report_summary={report.summary}
+                        />
+                    </div>
+                ))}
             </div>
         </div>
-    )
+    );
 }
 
 export default Library;
