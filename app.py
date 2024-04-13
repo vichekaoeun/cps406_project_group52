@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, send_from_directory, session, redirect, url_for, request, render_template, flash
-from functions import *
+from flask_cors import CORS
 from databaseSet import get_db, close_db, init_db
 from flask_bootstrap import Bootstrap
 from werkzeug.security import generate_password_hash
@@ -9,6 +9,7 @@ import click
 import os
 
 app = Flask(__name__, static_folder='./build')
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.cli.command("init-db")
 def init_db_command():
@@ -26,8 +27,6 @@ def serve(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
-
-host = 'http://127.0.0.1:5000/'
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -58,6 +57,31 @@ def register():
         return jsonify({'success': False, 'message': 'Registration failed due to a database error.'}), 500
     except Exception as e:
         db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+    
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data['username']
+    password = data['password']
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SELECT password FROM user WHERE username = ?", (username,))
+        user = cursor.fetchone()
+        
+        if user is None:
+            return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
+
+        stored_password_hash = user[0]
+        
+        if check_password_hash(stored_password_hash, password):
+            return jsonify({'success': True, 'message': 'Login successful!'}), 200
+        else:
+            return jsonify({'success': False, 'message': 'Invalid username or password'}), 401
+    except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/reset_pw', methods=['POST'])
@@ -113,7 +137,33 @@ def update_username():
         db.rollback()
         return jsonify({'success': False, 'message': 'Failed to update username'}), 500
 
+@app.route('/report', methods=['POST'])
+def submit_report():
+    data = request.json
+    report_number = data['reportNumber']
+    bug_type = data['bugType']
+    summary = data['summary']
+    updates_requested = data['updatesRequested']
+    progress_requested = data['progressRequested']
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("""
+            INSERT INTO bug_reports (report_number, bug_type, summary, updates_requested, progress_requested)
+            VALUES (?, ?, ?, ?, ?)
+        """, (report_number, bug_type, summary, updates_requested, progress_requested))
+        db.commit()
+        return jsonify({'success': True, 'message': 'Bug report submitted successfully'}), 200
+    except sqlite3.IntegrityError:
+        db.rollback()
+        return jsonify({'success': False, 'message': 'Registration failed due to a database error.'}), 500
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 

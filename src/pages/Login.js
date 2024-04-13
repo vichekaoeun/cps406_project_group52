@@ -24,6 +24,7 @@ function App() {
       const data = await response.json();
       if (data.success) {
         setMessage('Login successful.');
+        window.location.href = '/report';
       } else {
         setMessage(data.message || 'Login failed. Please try again.');
       }
@@ -47,7 +48,7 @@ function App() {
             Password:
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </label>
-          <button type='submit'>Login</button>
+          <button>Login</button>
           {message && <p>{message}</p>}
         </form>
         <div className="other-form">

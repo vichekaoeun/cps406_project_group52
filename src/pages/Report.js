@@ -5,39 +5,69 @@ import { Link } from 'react-router-dom';
 
 function Report() {
     const loginTitle = "Bug Report Form";
+    const [reportNumber, setReportNumber] = useState('');
+    const [bugType, setBugType] = useState('');
+    const [summary, setSummary] = useState('');
+    const [updatesRequested, setUpdatesRequested] = useState(false);
+    const [progressRequested, setProgressRequested] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('/report', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({reportNumber, bugType, summary, updatesRequested, progressRequested}),
+            });
+      
+            const data = await response.json();
+            if (data.success) {
+              setMessage('Bug report is created successfully!');
+            } else {
+              setMessage(data.message || 'Submit failed. Please try again.');
+            }
+          } catch (error) {
+            console.error('Submit failed:', error);
+            setMessage('Submit failed due to a technical issue. Please try again later.');
+          }
+    };
 
     return (
         <div className="Main-Container">
             <TitleCard title={loginTitle} />
             <div className="Report">
-                <form id="form">
+                <form id="form" onSubmit={handleSubmit}>
                     <label>
                         Report #:
-                        <input type="text" />
+                        <input type="text" value={reportNumber} onChange={e => setReportNumber(e.target.value)} />
                     </label>
                     <label>
                         Type of Bug:
-                        <input type="text" />
+                        <input type="text" value={bugType} onChange={e => setBugType(e.target.value)} />
                     </label>
                     <label for="bug-summary">
                         Summary of Bug:
-                        <textarea id="bug-summary" rows={8} cols={40} />
+                        <textarea id="bug-summary" rows={8} cols={40} value={summary} onChange={e => setSummary(e.target.value)} />
                     </label>
                     <label for="bug-update">
                         I would like to:
                         <div>
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={updatesRequested} onChange={e => setUpdatesRequested(e.target.checked)} />
                             <span>Updates on bug</span>
                         </div>
                         <div>
-                            <input type="checkbox" />
+                            <input type="checkbox" checked={progressRequested} onChange={e => setProgressRequested(e.target.checked)} />
                             <span>Progress on bug</span>
                         </div>
                     </label>
                     <div className="operation-button">
                         <button >Save & Exit</button>
-                        <button >Submit</button>
-                        <button >Cancel</button>
+                        <button type="submit" >Submit</button>
+                        <button><Link className='Link' to="/" >Cancel</Link></button>
+                        {message && <p>{message}</p>}
                     </div>
                 </form>
                 <div className="Navigation">
