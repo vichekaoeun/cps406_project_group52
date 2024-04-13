@@ -140,3 +140,14 @@ svg {
     gap: 1rem;
     margin-top: 20px;
 }
+
+#card-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+#library-sec {
+    height: 300px;
+}

@@ -16,23 +16,23 @@ function Report() {
         event.preventDefault();
         try {
             const response = await fetch('/report', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({reportNumber, bugType, summary, updatesRequested, progressRequested}),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ reportNumber, bugType, summary, updatesRequested, progressRequested }),
             });
-      
+
             const data = await response.json();
             if (data.success) {
-              setMessage('Bug report is created successfully!');
+                setMessage('Bug report is created successfully!');
             } else {
-              setMessage(data.message || 'Submit failed. Please try again.');
+                setMessage(data.message || 'Submit failed. Please try again.');
             }
-          } catch (error) {
+        } catch (error) {
             console.error('Submit failed:', error);
             setMessage('Submit failed due to a technical issue. Please try again later.');
-          }
+        }
     };
 
     return (
@@ -73,7 +73,7 @@ function Report() {
                 <div className="Navigation">
                     <button id="btn"><u>*Home Page</u></button>
                     <button id="btn"><u>*Change Password</u></button>
-                    <button id="btn"><u>*Bug Library</u></button>
+                    <button id="btn"><u><Link to="/library" className='Link'>*Bug Library</Link></u></button>
                     <button id="btn"><u>*Help?</u></button>
                     <button id="btn"><u>*Sign out</u></button>
                     <svg width="400" height="372" viewBox="0 0 427 372" fill="none" xmlns="http://www.w3.org/2000/svg">

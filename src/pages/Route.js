@@ -5,6 +5,7 @@ import Register from "./Register";
 import ChangePassword from "./ChangePassword";
 import ChangeUsername from "./ChangeUsername";
 import Report from "./Report";
+import Library from "./Library";
 
 function Route() {
     const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function Route() {
         {
             path: "/report",
             element: <Report />
+        },
+        {
+            path: "/library",
+            element: <Library />
         }
     ]);
     return <RouterProvider router={router} />;
