@@ -58,59 +58,31 @@ http://127.0.0.1:5000/
 ### 3.1. Functional Requirements:
 We describe the functional requirements by giving various use cases.
 <br>
-#### <u>Use cases related to registration:</u>
-<b>Use Case 1: Registration</b>
+![u1](./public/u1.png)
 <br>
-<u>Primary Actor:</u> User
+![u2](./public/u2.png)
 <br>
-<u>Secondary Actor:</u> System
+![u3](./public/u3.png)
 <br>
-<u>Precondition:</u> None
+![u4](./public/u4.png)
 <br>
-<u>Main Scenario:</u>
-<br>
-1. User goes to website, and clicks register option button and is redirected.
-2. User provides employee number, login name and password
-3. System checks that password is secure enough and checks to see if login
-name is available.
-<br>
-#### <u>Use cases related to authorization:</u>
-<b>Use Case 2: Login</b>
-<br>
-<u>Primary Actor:</u> User
-<br>
-<u>Secondary Actor:</u> System
-<br>
-<u>Precondition:</u> User is registered.
-<br>
-<u>Main Scenario:</u>
-<br>
-1. Go to website and click login button
-2. User gives login info
-3. System checks user info
-4. Members area is displayed
-<br>
-<u>Alternate Scenario:</u>
-4. (A) Login fails
-    - (A) 1. Re-prompt for login info
-    - (A) 2. User is allowed to enter info 3 times before password gets reset
-and sent to email
-4. (B) User forgot password
-    - (B)1. System sends temporary password to email account
-<br>
-##
-<b>Use Case 3: Cancel</b>
-<br>
-<u>Primary Actor:</u> User
-<br>
-<u>Secondary Actor:</u> System
-<br>
-<u>Precondition:</u> User is at login page.
-<br>
-<u>Main Scenario:</u>
-<br>
-1. User clicks cancel button at login screen
-2. User is redirected to main page
+
+### 3.2. Performance Requirements:
+The script should be able to run on any 32/64 bit machines. The site should be compatible
+with any web browser (ie Internet Explorer, Google Chrome, Firefox)
+
+### 3.3. Design Constraints:
+1. Accessibility: Anyone should be able to use and navigate through the website.
+2. Reliability: People should be able to login, check and submit any bug reports
+without issue and be notified when the bug is fixed.
+
+### 3.4. External Interface Requirements:
+The login screen requires a username or password from the user to enter BRS, and the
+option to create a new account. There is also an option if the user has forgotten their
+password/username. The bug reporting form provides allows the user to input a report number,
+type of bug and a short summary of the bug, and provides options such as a help screen, bug
+library and password change form on the right side. The user can then save, submit, or cancel
+their bug report. Appendix A shows a rough example of the planned user screen.
 
 ## 4. Team velocity diagram
 ![velocity diagram](./public/velocity%20diagram.png)
