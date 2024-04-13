@@ -19,9 +19,7 @@ files. Tracking of the bug will be done by means of keeping track of the “orig
 bug, type of bug, short description, and any other data that is relevant. This will allow users
 to keep track of the progress of the defect fix.
 
-## Brief Information:
-Here's some info about our main files, In "app.py", we've built a Flask app to manage user registration and accounts. 
-It talks to a SQLite database, securely storing passwords and providing features like password resets and username updates. 
-"databaseSet.py" ensures smooth database operations for our Flask app, setting up connections and configuring settings 
-like timeout for locks. "functions.py" helps with database interactions, like validating credentials, fetching posts, and adding comments. 
-Lastly, "loaddata.py" handles saving user info for login and system use.
+## How the build works:
+Here's some info about our main files, In "app.py", we've built a Flask app to manage user registration and accounts. It talks to a SQLite database, securely storing passwords and providing features like password resets and username updates. "databaseSet.py" ensures smooth database operations for our Flask app, setting up connections and configuring settings like timeout for locks. "functions.py" helps with database interactions, like validating credentials, fetching posts, and adding comments. Lastly, "loaddata.py" handles saving user info for login and system use.
+<br>
+Our Login.js acts as the default url '/' it is the first page users see once they go to our website. Route.js uses the react-router-dom library from React to create seamless routes between pages. Each JavaScript contains functions to send requests to the back-end flask app to perform various requests like GET and POST to retrieve user data or add user data to our SQLite database.
