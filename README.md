@@ -24,6 +24,12 @@ Here's some info about our main files, In "app.py", we've built a Flask app to m
 <br>
 Our Login.js acts as the default url '/' it is the first page users see once they go to our website. Route.js uses the react-router-dom library from React to create seamless routes between pages. Each JavaScript contains functions to send requests to the back-end flask app to perform various requests like GET and POST to retrieve user data or add user data to our SQLite database. The components folder contains component JavaScript files leveraging React's modularization of files so we can reuse Titlecard and BugCard for different pages without having to rebuild.
 
+## Technologies we used:
+- Front-end:
+JavaScript (React), HTML, CSS
+- Back-end:
+Python (Flask), SQLite
+
 ## Setup:
 Make sure to have:
 - pip installed
