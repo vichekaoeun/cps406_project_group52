@@ -71,7 +71,7 @@ function Report() {
                     </div>
                 </form>
                 <div className="Navigation">
-                    <button id="btn"><u>*Home Page</u></button>
+                    <button id="btn"><u><Link className="Link" to="/home">*Home Page</Link></u></button>
                     <button id="btn"><u><Link className='Link' to="/change-password">*Change Password</Link></u></button>
                     <button id="btn"><u><Link to="/library" className='Link'>*Bug Library</Link></u></button>
                     <button id="btn"><u><Link to="/help" className="Link">*Help</Link></u></button>

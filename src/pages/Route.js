@@ -7,6 +7,7 @@ import ChangeUsername from "./ChangeUsername";
 import Report from "./Report";
 import Library from "./Library";
 import Help from "./Help";
+import Home from "./Home";
 
 function Route() {
     const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function Route() {
         {
             path: "/help",
             element: <Help />
+        },
+        {
+            path: "/home",
+            element: <Home />
         }
     ]);
     return <RouterProvider router={router} />;
