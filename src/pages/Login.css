@@ -151,3 +151,10 @@ svg {
 #library-sec {
     height: 300px;
 }
+
+#center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

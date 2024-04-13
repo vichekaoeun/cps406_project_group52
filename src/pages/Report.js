@@ -72,9 +72,9 @@ function Report() {
                 </form>
                 <div className="Navigation">
                     <button id="btn"><u>*Home Page</u></button>
-                    <button id="btn"><u>*Change Password</u></button>
+                    <button id="btn"><u><Link className='Link' to="/change-password">*Change Password</Link></u></button>
                     <button id="btn"><u><Link to="/library" className='Link'>*Bug Library</Link></u></button>
-                    <button id="btn"><u>*Help?</u></button>
+                    <button id="btn"><u><Link to="/help" className="Link">*Help</Link></u></button>
                     <button id="btn"><u>*Sign out</u></button>
                     <svg width="400" height="372" viewBox="0 0 427 372" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="427" height="372" fill="#F5F5F5" />
