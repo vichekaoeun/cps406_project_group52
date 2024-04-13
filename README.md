@@ -24,18 +24,23 @@ Here's some info about our main files, In "app.py", we've built a Flask app to m
 <br>
 Our Login.js acts as the default url '/' it is the first page users see once they go to our website. Route.js uses the react-router-dom library from React to create seamless routes between pages. Each JavaScript contains functions to send requests to the back-end flask app to perform various requests like GET and POST to retrieve user data or add user data to our SQLite database. The components folder contains component JavaScript files leveraging React's modularization of files so we can reuse Titlecard and BugCard for different pages without having to rebuild.
 
-### 2.1. Technologies we used:
+### 2.1. What it looks like:
+![ui1](./public/ui1.png)
+![ui2](./public/ui2.png)
+<br>
+
+### 2.2. Technologies we used:
 - Front-end:
 JavaScript (React), HTML, CSS
 - Back-end:
 Python (Flask), SQLite
 
-### 2.2. Setup:
+### 2.3. Setup:
 Make sure to have:
 - pip installed
 - node.js installed
 
-### 2.3. How to run:
+### 2.4. How to run:
 To run our website you need to:
 Install all the dependencies:
 ```
@@ -97,3 +102,19 @@ their bug report. Appendix A shows a rough example of the planned user screen.
 ![p4](./public/p4.png)
 <br>
 ![p5](./public/p5.png)
+
+## 6. Test Report
+![t1](./public/t1.png)
+<br>
+![t2](./public/t2.png)
+<br>
+![t3](./public/t3.png)
+<br>
+![t4](./public/t4.png)
+<br>
+![t5](./public/t5.png)
+<br>
+![t6](./public/t6.png)
+<br>
+![t7](./public/t7.png)
+<br>
